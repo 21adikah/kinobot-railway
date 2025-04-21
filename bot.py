@@ -90,4 +90,12 @@ async def send_movie_card(message, movie, is_watched=False):
 
 if __name__ == '__main__':
     print("✅ Бот запущен на Railway!")
-    app = Application.builder().token
+    app = Application.builder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(CallbackQueryHandler(handle_button))
+
+    # 🔥 Удерживаем polling и логируем всё, что приходит
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
+
