@@ -126,7 +126,7 @@ async def send_movie_card(message, movie, is_watched=False):
             rezka_url = f"//hdrezka.ag/search/?do=search&subaction=search&q={quote(title)}"
     except Exception as e:
         print(f"HDRezka Error: {e}")
-        rezka_url = f"https://rezka.ag/search/?q={quote(title)}"
+        rezka_url = f"//hdrezka.ag/search/?do=search&subaction=search&q={quote(title)}"
 
     caption += f"\n\n🔗 <a href=\"{rezka_url}\">Смотреть на HDRezka</a>"
 
