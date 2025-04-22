@@ -2,6 +2,13 @@ import requests
 import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
+from urllib.parse import quote
+from HdRezkaApi import HdRezka
+
+hdrezka = HdRezka()
+
+
+
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
@@ -105,7 +112,25 @@ async def send_movie_card(message, movie, is_watched=False):
     overview = movie.get('overview', 'Описание недоступно.')
 
     watched_mark = "✅ Просмотрено" if is_watched else "🎬 Отметить как просмотренный"
-    caption = f"<b>{title}</b> ({year})\n⭐ iMDb: {rating:.1f}\n🎭 Жанр: {genres}\n⏱ Длительность: {runtime_str}\n\n<tg-spoiler>{overview}</tg-spoiler>"
+    caption = f"<b>{title}</b> ({year})\n"
+    caption += f"⭐ iMDb: {rating:.1f}\n"
+    caption += f"🎭 Жанр: {genres}\n"
+    caption += f"⏱ Длительность: {runtime_str}\n\n"
+    caption += f"<tg-spoiler>{overview}</tg-spoiler>"
+
+    # 🔎 HDRezka-поиск
+    try:
+        search_results = hdrezka.search(title)
+        if search_results:
+            rezka_url = search_results[0].url
+        else:
+            rezka_url = f"https://rezka.ag/search/?q={quote(title)}"
+    except Exception as e:
+        print(f"HDRezka Error: {e}")
+        rezka_url = f"https://rezka.ag/search/?q={quote(title)}"
+
+    caption += f"\n\n🔗 <a href=\"{rezka_url}\">Смотреть на HDRezka</a>"
+
     keyboard = [[InlineKeyboardButton(watched_mark, callback_data=f"watch_toggle_{movie_id}")]]
     markup = InlineKeyboardMarkup(keyboard)
 
