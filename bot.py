@@ -3,11 +3,10 @@ import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
 from urllib.parse import quote
-from HdRezkaApi import HdRezka
-
-hdrezka = HdRezka()
+from HdRezkaApi import HdRezkaSession
 
 
+hdrezka = HdRezkaSession(origin="http://hdrezka.ag")
 
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
