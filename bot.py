@@ -3,7 +3,7 @@ import os
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
 from urllib.parse import quote
-from HdRezkaApi import HdRezka
+from HDRezkaApi import HdRezka
 
 hdrezka = HdRezka()
 
